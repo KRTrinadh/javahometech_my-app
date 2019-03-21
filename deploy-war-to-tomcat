@@ -3,27 +3,10 @@ node{
      git 'https://github.com/javahometech/my-app'
    }
    stage('Compile-Package'){
-     agent any
-    tools { 
-        maven 'Maven 3.3.9' 
-    }
-    stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                ''' 
-            }
+      // Get maven home path
+      def mvnHome =  tool name: 'maven-3', type: 'maven'   
+      sh "${mvnHome}/opt/maven-3.6.0"
         }
-
-        stage ('Build') {
-            steps {
-                echo 'This is a minimal pipeline.'
-            }
-        }
-    }
-   }
    stage('Deploy to Tomcat'){
       
       sshagent(['tomcat-dev']) {
